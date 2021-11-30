@@ -1,26 +1,54 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import {Todolist} from "./Todolist";
+import {v1} from "uuid";
+
+type taskType = {
+    id: string
+    title: string
+    isDone: boolean
+}
+export type tasksType = Array<taskType>
+export type valueType = "all" | "active" | "completed"
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const [tasks, setTasks] = useState<tasksType>([
+        {id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "JS", isDone: true},
+        {id: v1(), title: "ReactJS", isDone: false},
+        {id: v1(), title: "Rest API", isDone: false},
+        {id: v1(), title: "GraphQL", isDone: false},
+    ]);
+    const [value, setValue] = useState<valueType>("all")
+
+    const filteredTasks = (id:string) => setTasks(tasks.filter(f => f.id !== id));
+
+    let tasksForTl = tasks;
+        if (value === "active") {
+            tasksForTl = tasks.filter(f => !f.isDone)
+        } else if (value === "completed") {
+            tasksForTl = tasks.filter(f => f.isDone)
+        }
+
+const addTask = (title: string) => {
+  let newTask = {id: v1(), title: title.trim(), isDone: false};
+  setTasks([newTask, ...tasks]);
+
+}
+
+
+    return (
+        <div className="App">
+            <Todolist tasks = {tasksForTl}
+                      filteredTasks = {filteredTasks}
+                      setValue = {setValue}
+                      addTask = {addTask}
+            />
+        </div>
+    );
 }
 
 export default App;
+
+
