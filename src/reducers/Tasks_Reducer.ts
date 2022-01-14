@@ -7,7 +7,7 @@ const DELETETASK = 'DELETETASK'
 const ADD_TASK = 'ADD_TASK'
 const CHANGECHECKED = 'CHANGECHECKED'
 const CHANGETITLETASK = 'CHANGETITLETASK'
-const GET_LOCAL_Task = 'GET_LOCAL_Task'
+
 type ActionTasksType =
     ReturnType<typeof deleteTL_AC>
     | ReturnType<typeof addTodolist_AC>
@@ -15,7 +15,7 @@ type ActionTasksType =
     | ReturnType<typeof addTask_AC>
     | ReturnType<typeof changeChecked_AC>
     | ReturnType<typeof changeTitleTask_AC>
-    | ReturnType<typeof localTask>
+
 
 let initialTasks:TasksType = {
     [todolistId1]: [
@@ -59,18 +59,11 @@ export const reducerTasks = (state:TasksType = initialTasks, action: ActionTasks
                     title: action.payload.title
                 } : m)
             }
-        case GET_LOCAL_Task:
-            return action.payload.newTask ? JSON.parse(action.payload.newTask) : state
         default:
             return state
     }
 }
-// export const deleteTLTask_AC = (todolistId: string) => {
-//     return {
-//         type: DELETE_TL_Task,
-//         id: todolistId
-//     } as const
-// }
+
 export const deleteTask_AC = (todolistId: string, taskId: string) => {
     return {
         type: DELETETASK,
@@ -104,17 +97,3 @@ export const changeTitleTask_AC = (todolistId: string, taskId: string, title: st
 
     } as const
 }
-export const localTask = (newTask: string | null)=>{
-    return{
-        type: "GET_LOCAL_Task",
-        payload:{
-            newTask
-        }
-    }as const
-}
-// export const addEmptyTask_AC = (id: string) => {
-//     return {
-//         type: ADDEMPTYTASK,
-//         id
-//     } as const
-// }

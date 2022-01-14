@@ -10,7 +10,7 @@ const CHANGETITLE_TL = 'CHANGETITLE_TL'
 
 type ActionTLType =
     ReturnType<typeof changeFilterTL_AC> | ReturnType<typeof deleteTL_AC> | ReturnType<typeof addTodolist_AC> | ReturnType<typeof changeTitleTL_AC>
-| ReturnType<typeof localTL>
+
 
 export let todolistId1 = v1();
 export let todolistId2 = v1();
@@ -31,8 +31,6 @@ export const reducerTL = (state:Array<TodolistType> = initialTL, action: ActionT
             return [...state, newTL]
         case CHANGETITLE_TL:
             return state.map(m => m.id === action.id ? {...m, title: action.title} : m)
-        case "GET_LOCAL_TL":
-            return action.payload.newTL ? JSON.parse(action.payload.newTL) : state
         default:
             return state
 
@@ -65,14 +63,6 @@ export const reducerTL = (state:Array<TodolistType> = initialTL, action: ActionT
             title
         } as const
     }
-    export const localTL = (newTL: string | null)=>{
-    return{
-        type: "GET_LOCAL_TL",
-        payload:{
-            newTL
-        }
-    }as const
-}
 
 
 
