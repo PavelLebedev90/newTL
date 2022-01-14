@@ -22,3 +22,6 @@
 .is-done {
   opacity: 0.5;
 }
+.editItem::placeholder{
+  color: rgba(255,42,33,0.96)
+}
