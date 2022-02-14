@@ -1,6 +1,7 @@
-import {combineReducers, createStore} from 'redux';
+import {applyMiddleware, combineReducers, createStore} from 'redux';
 import {reducerTasks} from '../reducers/Tasks_Reducer';
 import {reducerTL} from '../reducers/Todolists_Reducer';
+import thunk from 'redux-thunk';
 
 let stateFromLS;
 let stateString = localStorage.getItem('state')
@@ -15,8 +16,8 @@ let rootReducer = combineReducers({
 
 
 export type rootReducerType = ReturnType<typeof rootReducer>;
-export let store = createStore(rootReducer, stateFromLS)
+export let store = createStore(rootReducer, applyMiddleware(thunk))
 
-store.subscribe(() => {
-    localStorage.setItem('state', JSON.stringify(store.getState()))
-})
+// store.subscribe(() => {
+//     localStorage.setItem('state', JSON.stringify(store.getState()))
+// })

@@ -33,6 +33,7 @@ const EditItem = React.memo ((props:EditItemType) => {
                     onChange={onChangeHandler}
                     onKeyPress={onKeyPress}
                     placeholder={error}
+                    autoFocus
             />
     );
 });

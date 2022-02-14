@@ -1,30 +1,25 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {Todolist} from './Todolist';
 import AddItem from './components/AddItem';
-import {addTodolist_AC,} from './reducers/Todolists_Reducer';
+import {createTodolistTC, getTodolistsTC, TodosType} from './reducers/Todolists_Reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {rootReducerType} from './store/store';
-
-export type TasksType = {
-    [key: string]: Array<{ id: string, title: string, isDone: boolean }>
-}
-export type FilterValuesType = 'all' | 'active' | 'completed';
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}
 
 
 function App() {
 
     let dispatch = useDispatch();
-    let todolists = useSelector<rootReducerType, Array<TodolistType>>(state =>state.todolists)
+    let todolists = useSelector<rootReducerType, Array<TodosType>>(state =>state.todolists)
 
     const addTodolist = useCallback((title: string)=> {
-        dispatch(addTodolist_AC(title))
+        // dispatch(addTodolist_AC(title))
+        dispatch(createTodolistTC(title))
     },[dispatch])
+
+    useEffect(()=>{
+        dispatch(getTodolistsTC())
+    },[])
 
     return (
 
