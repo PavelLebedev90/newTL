@@ -1,10 +1,13 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {AddBox} from '@mui/icons-material';
+import {IconButton, TextField} from '@mui/material';
 
 type AddItemType = {
-    addItem:(title: string) => void
+    addItem: (title: string) => void
+    disabled?: boolean
 }
 
-const AddItem = React.memo((props:AddItemType) => {
+const AddItem = React.memo((props: AddItemType) => {
     let [title, setTitle] = useState('')
     let [error, setError] = useState<string | null>(null)
 
@@ -29,16 +32,21 @@ const AddItem = React.memo((props:AddItemType) => {
     }
 
 
-
     return (
         <div>
-            <input value={title}
-                   onChange={onChangeHandler}
-                   onKeyPress={onKeyPressHandler}
-                   className={error ? "error" : ""}
+            <TextField value={title}
+                       variant={'outlined'}
+                       onChange={onChangeHandler}
+                       onKeyPress={onKeyPressHandler}
+                       error={!!error}
+                       label={'Title'}
+                       helperText={error}
+                       disabled={props.disabled}
             />
-            <button onClick={addItem}>+</button>
-            {error && <div className="error-message">{error}</div>}
+            <IconButton color={'primary'} onClick={addItem}  disabled={props.disabled}>
+                <AddBox/>
+            </IconButton>
+            {/*{error && <div className="error-message">{error}</div>}*/}
         </div>
     );
 });

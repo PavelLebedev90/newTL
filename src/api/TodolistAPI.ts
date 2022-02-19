@@ -10,6 +10,8 @@ type CreateTLType = {
     data:{
         item:TodolistAPIType
     }
+    resultCode: number
+    messages: string[]
 }
 export const todolistAPI = {
     getTodolists(){

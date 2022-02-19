@@ -33,6 +33,8 @@ export type TaskDomainType = {
     status: TaskStatuses
     title: string
     todoListId: string
+
+
 }
 export enum TaskStatuses {
     New = 0,
@@ -47,6 +49,8 @@ type CreateTaskType = {
     data:{
         item:TaskDomainType
     }
+    resultCode: number
+    messages: string[]
 }
 export const taskAPI = {
     getTasks(todolistId:string){
