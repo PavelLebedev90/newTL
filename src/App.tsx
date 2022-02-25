@@ -71,10 +71,10 @@ function App() {
             }
             <Container fixed>
                 <Routes>
-                    <Route path="newTL/login" element={<Login/>}/>
-                    <Route path="newTL/" element={<TodolistList/>}/>
-                    <Route path="newTL/404" element={<h1>404: PAGE NOT FOUND</h1>}/>
-                    <Route path="*" element={<Navigate to={'newTL/404'}/>}/>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/" element={<TodolistList/>}/>
+                    <Route path="/404" element={<h1>404: PAGE NOT FOUND</h1>}/>
+                    <Route path="*" element={<Navigate to={'/404'}/>}/>
                 </Routes>
             </Container>
         </div>

@@ -10,7 +10,7 @@ import {BrowserRouter} from 'react-router-dom';
 
 ReactDOM.render(
     <Provider store={store}>
-        <BrowserRouter>
+        <BrowserRouter basename={'newTL'}>
             <App/>
         </BrowserRouter>
 </Provider>,  document.getElementById('root'));
