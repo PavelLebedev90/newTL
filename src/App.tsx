@@ -6,28 +6,47 @@ import {createTodolistTC, getTodolistsTC, saveFilterToLocalStorage, TodosType} f
 import {useDispatch, useSelector} from 'react-redux';
 import {rootReducerType} from './store/store';
 
-import {RequestStatusType} from './reducers/App-reducer';
-import {AppBar, Button, Container, Grid, IconButton, LinearProgress, Paper, Toolbar, Typography} from '@mui/material';
+import {initializeAppTC, RequestStatusType} from './reducers/App-reducer';
+import {
+    AppBar,
+    Button,
+    CircularProgress,
+    Container,
+    Grid,
+    IconButton,
+    LinearProgress,
+    Paper,
+    Toolbar,
+    Typography
+} from '@mui/material';
 import {Menu} from '@mui/icons-material';
 import {ErrorSnackbar} from './components/ErrorSnackbar';
+import {Routes, Route, Navigate} from 'react-router-dom';
+import {Login} from './components/Login';
+import TodolistList from './TodolistList';
+import {logoutTC} from './reducers/Auth-reducer';
 
 
 function App() {
-
-    let dispatch = useDispatch();
-    let todolists = useSelector<rootReducerType, Array<TodosType>>(state => state.todolists)
+    const dispatch = useDispatch()
     let status = useSelector<rootReducerType, RequestStatusType>(state => state.app.status)
-    const addTodolist = useCallback((title: string) => {
-        dispatch(createTodolistTC(title))
-    }, [dispatch])
+    const isInitialized = useSelector<rootReducerType, boolean>(state => state.app.isInitialized)
+    const isLoggedIn = useSelector<rootReducerType, boolean>(state => state.auth.isLoggedIn)
 
     useEffect(() => {
-        dispatch(getTodolistsTC())
-    }, [])
+    dispatch(initializeAppTC())
+    },[])
 
-    useEffect(() => {
-        dispatch(saveFilterToLocalStorage(todolists))
-    }, [todolists])
+    if (!isInitialized) {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <CircularProgress/>
+        </div>
+    }
+
+    const logout = () => {
+      dispatch(logoutTC())
+    }
 
     return (
 
@@ -43,7 +62,7 @@ function App() {
                     <Typography variant={'h6'}>
                         News
                     </Typography>
-                    <Button color={'inherit'}>Login</Button>
+                    {isLoggedIn && <Button color={'inherit'} onClick={logout}>Logout</Button>}
                 </Toolbar>
             </AppBar>
             {
@@ -51,26 +70,12 @@ function App() {
                 <LinearProgress color="primary" style={{position: 'relative'}}/>
             }
             <Container fixed>
-                <Grid container style={{padding: '20px'}}>
-                    <AddItem addItem={addTodolist}/>
-                </Grid>
-                <Grid container spacing={3}>
-                    {
-                        todolists.map(tl => {
-                            return (
-                                <Grid item
-                                      key={tl.id}>
-
-                                    <Paper style={{padding: '10px'}}>
-                                        <Todolist
-                                            todolistId={tl.id}
-                                        />
-                                    </Paper>
-                                </Grid>
-                            )
-                        })
-                    }
-                </Grid>
+                <Routes>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/" element={<TodolistList/>}/>
+                    <Route path="/404" element={<h1>404: PAGE NOT FOUND</h1>}/>
+                    <Route path="*" element={<Navigate to={'/404'}/>}/>
+                </Routes>
             </Container>
         </div>
     );
