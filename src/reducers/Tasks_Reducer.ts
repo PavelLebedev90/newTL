@@ -2,7 +2,7 @@ import {
     addTodolist_AC,
     changeTodolistEntityStatusAC,
     deleteTL_AC,
-    getTodolists_AC,
+    getTodolists_AC, resetData_AC,
     TLActionType
 } from './Todolists_Reducer';
 import {Dispatch} from 'redux';
@@ -30,6 +30,7 @@ type ActionTasksType =
     | ReturnType<typeof getTasks_AC>
     | ReturnType<typeof updateTask_AC>
     | ChangeTaskEntityStatusType
+    | ReturnType<typeof resetData_AC>
 
 export type TasksType = {
     [key: string]: Array<TaskDomainType & {
@@ -90,6 +91,8 @@ export const reducerTasks = (state: TasksType = initialTasks, action: ActionTask
                 [action.todolistId]: state[action.todolistId]
                     .map(m => m.id === action.taskId ? {...m, entityStatus: action.entityStatus} : m)
             }
+        case TLActionType.RESET_DATA:
+            return {}
         default:
             return state
     }

@@ -10,7 +10,8 @@ export enum TLActionType {
     SET_FILTER = 'SET_FILTER',
     ADD_TL = 'ADD_TL',
     CHANGETITLE_TL = 'CHANGETITLE_TL',
-    CHANGE_TODOLIST_ENTITY_STATUS = 'CHANGE_TODOLIST_ENTITY_STATUS'
+    CHANGE_TODOLIST_ENTITY_STATUS = 'CHANGE_TODOLIST_ENTITY_STATUS',
+    RESET_DATA = 'RESET_DATA'
 }
 
 export type ChangeTodolistEntityStatusType = ReturnType<typeof changeTodolistEntityStatusAC>
@@ -21,6 +22,7 @@ type ActionTLType =
     | ReturnType<typeof changeTitleTL_AC>
     | ReturnType<typeof getTodolists_AC>
     | ChangeTodolistEntityStatusType
+    | ReturnType<typeof resetData_AC>
 
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
@@ -49,6 +51,8 @@ export const reducerTL = (state: Array<TodosType> = initialTL, action: ActionTLT
             return state.map(m => m.id === action.id ? {...m, title: action.title} : m)
         case TLActionType.CHANGE_TODOLIST_ENTITY_STATUS:
             return state.map(m => m.id === action.todolistId ? {...m, entityStatus: action.entityStatus} : m)
+        case TLActionType.RESET_DATA:
+            return []
         default:
             return state
 
@@ -94,6 +98,12 @@ export const changeTodolistEntityStatusAC = (todolistId: string, entityStatus: R
         type: TLActionType.CHANGE_TODOLIST_ENTITY_STATUS,
         entityStatus,
         todolistId
+    } as const
+}
+export const resetData_AC = () => {
+    return {
+        type: TLActionType.RESET_DATA,
+
     } as const
 }
 

@@ -1,10 +1,9 @@
 import {Dispatch} from 'redux'
 import {AppErrorType, AppStatusType, setAppErrorAC, setAppStatusAC} from './App-reducer';
-import {taskAPI, UpdateModalType} from '../api/TaskAPI';
-import {handleServerNetworkError, handleServerTaskResponse} from '../utils/error-utils';
+import {handleServerNetworkError} from '../utils/error-utils';
 import {AxiosError} from 'axios';
-import {changeTaskEntityStatusAC, updateTask_AC} from './Tasks_Reducer';
 import {authAPI, LoginParamsType} from '../api/AuthAPI';
+import {resetData_AC} from './Todolists_Reducer';
 
 const initialState = {
     isLoggedIn: false
@@ -48,6 +47,7 @@ export const logoutTC = () => (dispatch: Dispatch) => {
         .then((res) => {
             if (res.data.resultCode === 0) {
                 dispatch(setIsLoggedInAC(false))
+                dispatch(resetData_AC())
                 dispatch(setAppStatusAC('succeeded'))
             } else {
                 dispatch(setAppErrorAC(res.data.messages[0]))

@@ -25,3 +25,6 @@ export let store = createStore(rootReducer, applyMiddleware(thunk))
 // store.subscribe(() => {
 //     localStorage.setItem('state', JSON.stringify(store.getState().todolists))
 // })
+
+//@ts-ignore
+window.store = store
